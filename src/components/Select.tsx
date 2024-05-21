@@ -10,12 +10,14 @@ type SelectProps = {
   searchTerm: string;
   selectedList: SelectedItem[];
   handleClick: (selectedItem: SelectedItem) => void;
+  backward: boolean;
 };
 
 export default function Select({
   searchTerm,
   selectedList,
   handleClick,
+  backward,
 }: SelectProps) {
   const { searchResults, status } = useFetchAPI(ENDPOINT, searchTerm);
   const [selectIndex, setSelectIndex] = React.useState(0);
@@ -69,20 +71,48 @@ export default function Select({
     ));
   };
 
-  return <Wrapper status={status}>{checkStatus()}</Wrapper>;
+  return (
+    <Wrapper status={status} backward={backward}>
+      {checkStatus()}
+    </Wrapper>
+  );
 }
 
 type StyleType = {
   status: "success" | "error" | "loading" | "empty";
+  backward: boolean;
 };
 
 const Wrapper = styled.div<StyleType>`
   width: 100%;
-  min-height: 50px;
-  max-height: 300px;
   border-radius: 13px;
   overflow: scroll;
   border: 1px solid var(--grey-500);
   margin-top: 15px;
   padding: ${({ status }) => (status !== "success" ? "20px" : "0")};
+
+  animation: ${({ backward }) =>
+    backward
+      ? "forwardShow 0.2s linear forwards"
+      : "backwardShow 0.21s linear"};
+
+  @keyframes forwardShow {
+    0% {
+      max-height: 0px;
+    }
+
+    100% {
+      max-height: 300px;
+    }
+  }
+
+  @keyframes backwardShow {
+    0% {
+      max-height: 300px;
+    }
+
+    100% {
+      max-height: 0px;
+    }
+  }
 `;

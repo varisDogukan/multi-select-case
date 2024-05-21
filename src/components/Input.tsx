@@ -5,11 +5,25 @@ import icon from "../assets/arrow.svg";
 type SelectProps = {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   setShowSelect: React.Dispatch<React.SetStateAction<boolean>>;
+  setBackWard: React.Dispatch<React.SetStateAction<boolean>>;
+  showSelect: boolean;
 };
 
-export default function Input({ setSearchTerm, setShowSelect }: SelectProps) {
+export default function Input({
+  setSearchTerm,
+  setShowSelect,
+  showSelect,
+  setBackWard,
+}: SelectProps) {
   return (
-    <Wrapper htmlFor='search' onClick={() => setShowSelect(true)}>
+    <Wrapper
+      htmlFor='search'
+      onClick={() => {
+        setShowSelect(true);
+        setBackWard(true);
+      }}
+      $showSelect={showSelect}
+    >
       <input
         autoComplete='off'
         type='text'
@@ -24,7 +38,11 @@ export default function Input({ setSearchTerm, setShowSelect }: SelectProps) {
   );
 }
 
-const Wrapper = styled.label`
+type StyleType = {
+  $showSelect: boolean;
+};
+
+const Wrapper = styled.label<StyleType>`
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -45,5 +63,8 @@ const Wrapper = styled.label`
   .icon-container {
     width: 16px;
     cursor: pointer;
+    transform: ${({ $showSelect }) =>
+      $showSelect ? "rotateX(180deg)" : "rotateX(0)"};
+    transition: all 0.2s linear;
   }
 `;

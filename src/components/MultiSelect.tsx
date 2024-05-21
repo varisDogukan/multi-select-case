@@ -1,6 +1,6 @@
+import React from "react";
 import styled from "styled-components";
 import { Select, SelectedList } from ".";
-import React from "react";
 import { SelectedItem } from "../types";
 import useOutsideClick from "../hooks/useOutsideClick";
 
@@ -8,11 +8,21 @@ export default function MultiSelect() {
   const [selectedList, setSelectedList] = React.useState<SelectedItem[]>([]);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [showSelect, setShowSelect] = React.useState(false);
+  const [backward, setBackWard] = React.useState(false);
   const multiSelectRef = React.useRef(null);
+
+  console.log(backward);
+  console.log("select", showSelect);
 
   useOutsideClick({
     ref: multiSelectRef,
-    callback: () => setShowSelect(false),
+    callback: () => {
+      setBackWard(false);
+
+      setTimeout(() => {
+        setShowSelect(false);
+      }, 200);
+    },
   });
 
   const handleClick = (selectedItem: SelectedItem) => {
@@ -35,6 +45,8 @@ export default function MultiSelect() {
         setSearchTerm={setSearchTerm}
         setShowSelect={setShowSelect}
         handleClick={handleClick}
+        showSelect={showSelect}
+        setBackWard={setBackWard}
       />
 
       {showSelect && (
@@ -42,6 +54,7 @@ export default function MultiSelect() {
           searchTerm={searchTerm}
           selectedList={selectedList}
           handleClick={handleClick}
+          backward={backward}
         />
       )}
     </Wrapper>

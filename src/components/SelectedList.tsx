@@ -8,7 +8,9 @@ type SelectedListProps = {
   selectedList: SelectedItem[];
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   setShowSelect: React.Dispatch<React.SetStateAction<boolean>>;
+  setBackWard: React.Dispatch<React.SetStateAction<boolean>>;
   handleClick: (selectedItem: SelectedItem) => void;
+  showSelect: boolean;
 };
 
 export default function SelectedList({
@@ -16,6 +18,8 @@ export default function SelectedList({
   setSearchTerm,
   setShowSelect,
   handleClick,
+  showSelect,
+  setBackWard,
 }: SelectedListProps) {
   return (
     <Wrapper>
@@ -28,7 +32,12 @@ export default function SelectedList({
         </div>
       ))}
 
-      <Input setSearchTerm={setSearchTerm} setShowSelect={setShowSelect} />
+      <Input
+        setSearchTerm={setSearchTerm}
+        setShowSelect={setShowSelect}
+        setBackWard={setBackWard}
+        showSelect={showSelect}
+      />
     </Wrapper>
   );
 }
