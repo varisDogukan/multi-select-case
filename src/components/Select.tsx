@@ -49,6 +49,8 @@ export default function Select({
   const checkStatus = () => {
     if (status === "error") return <p>Something went wrong</p>;
     if (status === "loading") return <p>Loading...</p>;
+    if (status === "empty")
+      return <p>The character you are looking for was not found.</p>;
 
     return searchResults?.map((item: Item, index: number) => (
       <SelectItem
@@ -67,10 +69,14 @@ export default function Select({
     ));
   };
 
-  return <Wrapper>{checkStatus()}</Wrapper>;
+  return <Wrapper status={status}>{checkStatus()}</Wrapper>;
 }
 
-const Wrapper = styled.div`
+type StyleType = {
+  status: "success" | "error" | "loading" | "empty";
+};
+
+const Wrapper = styled.div<StyleType>`
   width: 100%;
   min-height: 50px;
   max-height: 300px;
@@ -78,4 +84,5 @@ const Wrapper = styled.div`
   overflow: scroll;
   border: 1px solid var(--grey-500);
   margin-top: 15px;
+  padding: ${({ status }) => (status !== "success" ? "20px" : "0")};
 `;
