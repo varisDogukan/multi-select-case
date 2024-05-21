@@ -1,3 +1,9 @@
+import MultiSelect from "./components/MultiSelect";
+
 export default function App() {
-  return <h1>Hello</h1>;
+  return (
+    <>
+      <MultiSelect />
+    </>
+  );
 }
