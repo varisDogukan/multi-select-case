@@ -72,15 +72,15 @@ export default function Select({
   };
 
   return (
-    <Wrapper status={status} backward={backward}>
+    <Wrapper $status={status} $backward={backward}>
       {checkStatus()}
     </Wrapper>
   );
 }
 
 type StyleType = {
-  status: "success" | "error" | "loading" | "empty";
-  backward: boolean;
+  $status: "success" | "error" | "loading" | "empty";
+  $backward: boolean;
 };
 
 const Wrapper = styled.div<StyleType>`
@@ -89,10 +89,10 @@ const Wrapper = styled.div<StyleType>`
   overflow: scroll;
   border: 1px solid var(--grey-500);
   margin-top: 15px;
-  padding: ${({ status }) => (status !== "success" ? "20px" : "0")};
+  padding: ${({ $status }) => ($status !== "success" ? "20px" : "0")};
 
-  animation: ${({ backward }) =>
-    backward
+  animation: ${({ $backward }) =>
+    $backward
       ? "forwardShow 0.2s linear forwards"
       : "backwardShow 0.21s linear"};
 
