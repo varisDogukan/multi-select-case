@@ -44,7 +44,7 @@ export default function useFetchAPI(ENDPOINT: string, searchTerm: string) {
       // Başlatılan bir isteği bileşen unmount olduğunda veya yeni istek gönderildiğinde iptal et.
       controller.abort();
     };
-  }, [searchTerm]);
+  }, [searchTerm, ENDPOINT]);
 
   return { searchResults, status };
 }

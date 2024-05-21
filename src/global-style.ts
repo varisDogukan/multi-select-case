@@ -19,6 +19,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
+    background-color: var(--grey-200);
     color: var(--grey-700);
     min-height: 100vh;
     display: grid;

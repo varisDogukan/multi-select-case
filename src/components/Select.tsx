@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import useFetchAPI from "../hooks/useFetchAPI";
-import { SelectedItem } from "../types";
+import { Item, SelectedItem } from "../types";
 import SelectItem from "./SelectItem";
 import React from "react";
 
@@ -8,13 +8,18 @@ const ENDPOINT = "https://rickandmortyapi.com/api/character";
 
 type SelectProps = {
   searchTerm: string;
-  setSelectedList: React.Dispatch<React.SetStateAction<SelectedItem[]>>;
+  selectedList: SelectedItem[];
+  handleClick: (selectedItem: SelectedItem) => void;
 };
 
-export default function Select({ searchTerm }: SelectProps) {
+export default function Select({
+  searchTerm,
+  selectedList,
+  handleClick,
+}: SelectProps) {
   const { searchResults, status } = useFetchAPI(ENDPOINT, searchTerm);
   const [selectIndex, setSelectIndex] = React.useState(0);
-  const [selectedIndex, setSelectedIndex] = React.useState(null);
+  const [selectedItem, setSelectedItem] = React.useState<SelectedItem>();
 
   React.useEffect(() => {
     const handleKey = (evnt: KeyboardEvent) => {
@@ -31,7 +36,7 @@ export default function Select({ searchTerm }: SelectProps) {
       }
 
       if (evnt.key === "Enter") {
-        console.log("enter'a basıldı");
+        handleClick(selectedItem as SelectedItem);
       }
     };
 
@@ -45,14 +50,19 @@ export default function Select({ searchTerm }: SelectProps) {
     if (status === "error") return <p>Something went wrong</p>;
     if (status === "loading") return <p>Loading...</p>;
 
-    return searchResults?.map((item: any) => (
+    return searchResults?.map((item: Item, index: number) => (
       <SelectItem
         key={item?.id}
         id={item?.id}
         name={item?.name}
-        episode={item?.episode?.length}
-        image={item?.image}
+        episode={item?.episode?.length as number}
+        image={item?.image as string}
         searchTerm={searchTerm}
+        setSelectedItem={setSelectedItem}
+        selectIndex={selectIndex}
+        index={index}
+        selectedList={selectedList}
+        handleClick={handleClick}
       />
     ));
   };
@@ -67,4 +77,5 @@ const Wrapper = styled.div`
   border-radius: 13px;
   overflow: scroll;
   border: 1px solid var(--grey-500);
+  margin-top: 15px;
 `;

@@ -1,37 +1,55 @@
 import styled from "styled-components";
-import { Input, Select, SelectedList } from ".";
+import { Select, SelectedList } from ".";
 import React from "react";
 import { SelectedItem } from "../types";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 export default function MultiSelect() {
   const [selectedList, setSelectedList] = React.useState<SelectedItem[]>([]);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [showSelect, setShowSelect] = React.useState(false);
+  const multiSelectRef = React.useRef(null);
+
+  useOutsideClick({
+    ref: multiSelectRef,
+    callback: () => setShowSelect(false),
+  });
+
+  const handleClick = (selectedItem: SelectedItem) => {
+    if (selectedList.find((item) => item.id === selectedItem.id)) {
+      setSelectedList(
+        selectedList.filter((item) => item.id !== selectedItem.id)
+      );
+    } else {
+      setSelectedList([
+        ...selectedList,
+        { id: selectedItem.id, name: selectedItem.name },
+      ]);
+    }
+  };
 
   return (
-    <Wrapper>
-      <div className='container'>
-        <SelectedList selectedList={selectedList} />
-        <Input setSearchTerm={setSearchTerm} setShowSelect={setShowSelect} />
-      </div>
+    <Wrapper ref={multiSelectRef}>
+      <SelectedList
+        selectedList={selectedList}
+        setSearchTerm={setSearchTerm}
+        setShowSelect={setShowSelect}
+        handleClick={handleClick}
+      />
+
       {showSelect && (
-        <Select searchTerm={searchTerm} setSelectedList={setSelectedList} />
+        <Select
+          searchTerm={searchTerm}
+          selectedList={selectedList}
+          handleClick={handleClick}
+        />
       )}
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  .container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 600px;
-    min-height: 52px;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 5px 10px 5px 5px;
-    border-radius: 13px;
-    border: 1px solid var(--grey-500);
-  }
+  background-color: var(--white);
+  padding: 20px;
+  border-radius: 20px;
 `;

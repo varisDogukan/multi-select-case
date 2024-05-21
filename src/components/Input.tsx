@@ -11,6 +11,7 @@ export default function Input({ setSearchTerm, setShowSelect }: SelectProps) {
   return (
     <Wrapper htmlFor='search' onClick={() => setShowSelect(true)}>
       <input
+        autoComplete='off'
         type='text'
         id='search'
         onChange={(evnt) => setSearchTerm(evnt.target.value)}
@@ -24,10 +25,11 @@ export default function Input({ setSearchTerm, setShowSelect }: SelectProps) {
 }
 
 const Wrapper = styled.label`
-  flex: 1;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 5px;
+  height: 42px;
+  flex: 2;
 
   input {
     width: 100%;
@@ -37,6 +39,7 @@ const Wrapper = styled.label`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    height: 100%;
   }
 
   .icon-container {
