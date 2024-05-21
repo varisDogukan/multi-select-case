@@ -11,9 +11,6 @@ export default function MultiSelect() {
   const [backward, setBackWard] = React.useState(false);
   const multiSelectRef = React.useRef(null);
 
-  console.log(backward);
-  console.log("select", showSelect);
-
   useOutsideClick({
     ref: multiSelectRef,
     callback: () => {
